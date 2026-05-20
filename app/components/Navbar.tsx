@@ -1,13 +1,12 @@
-// Nama komponen 'Navbar' dengan isi function
-// ( : ) berarti mau memberi tipe data
-
 import { Sparkles } from "lucide-react"
 import { Link } from "react-router"
+import { usePuterStore } from "~/lib/puter"
 
-// Navbar adalah function yang mengembalikan tipe data JSXElement/ReactElement/React.createElement("div", null, "Navbar")
 const Navbar = () => {
+    // Panggil state auth dari puter
+    const { auth } = usePuterStore()
+
     return (
-        // kode dibawah ini merupakan jsx.element dan bukan dom html asli
         <nav className="navbar">
             <Link
             to="/"
@@ -16,7 +15,6 @@ const Navbar = () => {
                 group
             "
             >
-
             {/* ICON */}
             <div
                 className="
@@ -27,9 +25,7 @@ const Navbar = () => {
                 from-indigo-500
                 via-purple-500
                 to-violet-500
-
                 shadow-md shadow-indigo-500/20
-
                 group-hover:scale-105
                 transition-all duration-300
                 "
@@ -39,7 +35,6 @@ const Navbar = () => {
 
             {/* BRAND */}
             <div className="flex flex-col leading-none">
-
                 <h5
                 className="
                     text-2xl
@@ -62,10 +57,25 @@ const Navbar = () => {
                 >
                 AI Resume Tool
                 </span>
-
             </div>
             </Link>
-            <Link to="/upload" className="primary-button w-fit bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-300 shadow-md shadow-indigo-500;">Upload Resume</Link>
+            
+            {/* KELOMPOK TOMBOL KANAN */}
+            <div className="flex items-center gap-4 sm:gap-6">
+                {/* Tampilkan tombol Log Out hanya jika user sudah login */}
+                {auth.isAuthenticated && (
+                    <button 
+                        onClick={auth.signOut}
+                        className="text-sm font-semibold text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
+                    >
+                        Log Out
+                    </button>
+                )}
+                
+                <Link to="/upload" className="primary-button w-fit bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-300 shadow-md shadow-indigo-500;">
+                    Upload Resume
+                </Link>
+            </div>
         </nav>
     )
 }

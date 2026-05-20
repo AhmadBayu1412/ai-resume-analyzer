@@ -27,12 +27,9 @@ export default function Home() {
             setLoadingResumes(true);
 
             const items = (await kv.list('resume:*', true)) as KVItem[];
-            // console.log('[Home] Raw KV items:', items)
 
             const parsedResumes = items?.map((item) => {
                 const parsed = JSON.parse(item.value) as Resume
-                // Log tiap resume agar bisa verifikasi id-nya
-                // console.log('[Home] Resume id:', parsed.id, '| KV key:', item.key)
                 return parsed
             })
 

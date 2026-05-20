@@ -66,24 +66,24 @@ const Upload = () => {
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget.closest('form')
-    if(!form) return
+        e.preventDefault()
+        const form = e.currentTarget.closest('form')
+        if(!form) return
 
-    const formData = new FormData(form)
+        const formData = new FormData(form)
 
-    const companyName = formData.get('company-name') as string
-    const jobTitle = formData.get('job-title') as string
-    const jobDescription = formData.get('job-description') as string
+        const companyName = formData.get('company-name') as string
+        const jobTitle = formData.get('job-title') as string
+        const jobDescription = formData.get('job-description') as string
 
-    if(!file) return
+        if(!file) return
 
-   handleAnalyze({companyName, jobTitle, jobDescription, file})
-}
+        handleAnalyze({companyName, jobTitle, jobDescription, file})
+    }
 
 
     return (
-        <main className="bg-[url('/images/bg-main.svg')] bg-cover">
+        <main className="bg-[url('/images/bg-main.svg')] bg-cover min-h-screen">
             <Navbar />
 
             <section className="main-section">
@@ -92,14 +92,15 @@ const Upload = () => {
                     {isProcessing ? (
                         <>
                             <h2>{statusText}</h2>
-                            <img src="/images/resume-scan.gif" className="w-full" />
+                            <img src="/images/resume-scan.gif" className="w-full max-w-sm mx-auto" />
                         </>
                     ) 
                     : (
                         <h2>Upload your resume and receive instant scoring, actionable improvements, and ATS-ready optimization in seconds.</h2>
                     )}
                     {!isProcessing && (
-                        <form id="upload-form" onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
+                        // PERUBAHAN DI SINI: Ditambahkan w-full max-w-3xl mx-auto text-left
+                        <form id="upload-form" onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8 w-full max-w-3xl mx-auto text-left">
                             <div className="form-div">
                                 <label htmlFor="company-name">Target Company</label>
                                 <input type="text" name='company-name' placeholder="e.g. Google, Microsoft, Spotify" id="company-name" />
@@ -118,13 +119,13 @@ const Upload = () => {
                                     className="resize-none max-h-60 overflow-y-auto"
                                     />
                             </div>
-                            <div className="form-div">
+                            <div className="form-div w-full">
                                 <label htmlFor="uploader">Upload Resume</label>
                                 <FileUploader onFileSelect={handleFileSelect}/>
 
                             </div>
 
-                            <button className="primary-button bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-300 shadow-md shadow-indigo-500;" type="submit">Analyze Resume</button>
+                            <button className="primary-button w-full mt-2 bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-300 shadow-md shadow-indigo-500" type="submit">Analyze Resume</button>
                         </form>
                     )}
                 </div>

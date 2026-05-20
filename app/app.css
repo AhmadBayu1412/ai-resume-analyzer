@@ -164,7 +164,7 @@ textarea:focus {
   .auth-button {
     @apply w-full sm:w-[600px] rounded-xl sm:rounded-2xl py-3 px-4 sm:py-4 sm:px-8 text-lg sm:text-2xl font-bold cursor-pointer text-white transition-all duration-300;
     
-    background: linear-gradient(135deg, #111827, #6366f1);
+    background: linear-gradient(to right, #6366F1, #A855F7, #C4B5FD);
     box-shadow: 0 12px 30px rgba(99,102,241,0.18);
   }
 

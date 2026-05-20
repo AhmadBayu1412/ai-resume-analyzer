@@ -67,7 +67,7 @@ const Resume = () => {
 
     return (
         <main className="!pt-0">
-           <nav className="relative z-50 container mx-auto px-6 pt-6">
+           <nav className="relative z-50 container mx-auto px-6 pt-4 mb-2">
             <Link
                 to="/"
                 className="
