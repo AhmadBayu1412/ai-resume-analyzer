@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router"
 import { usePuterStore } from "~/lib/puter"
 
 export const meta = () => {[
-    {title: 'Resumind | Auth'},
+    {title: 'CVPilot | Auth'},
     {name: 'description', content: 'Log into your account'}
 ]}
 
@@ -34,11 +34,11 @@ const Auth = () => {
                             <>
                             {auth.isAuthenticated ? (
                                 <button className="auth-button" onClick={auth.signOut}>
-                                    <p>Log Out</p>
+                                    Log Out
                                 </button>
                             ) : (
                                 <button className="auth-button" onClick={auth.signIn}>
-                                    <p>Log in</p>
+                                    Log in
                                 </button>
                             )}
                             </>

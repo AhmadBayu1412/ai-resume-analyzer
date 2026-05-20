@@ -54,51 +54,31 @@ const CategoryHeader = ({
   );
 };
 
-const CategoryContent = ({
-                           tips,
-                         }: {
-  tips: { type: "good" | "improve"; tip: string; explanation: string }[];
-}) => {
+const CategoryContent = ({ tips }: { tips: { type: "good" | "improve"; tip: string; explanation: string }[]; }) => {
   return (
-      <div className="flex flex-col gap-4 items-center w-full">
-        <div className="bg-gray-50 w-full rounded-lg px-5 py-4 grid grid-cols-2 gap-4">
+      <div className="flex flex-col gap-4 sm:gap-6 w-full">
+        <div className="bg-gray-50/50 backdrop-blur-sm border border-gray-100 w-full rounded-2xl p-3 sm:p-5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           {tips.map((tip, index) => (
-              <div className="flex flex-row gap-2 items-center" key={index}>
-                <img
-                    src={
-                      tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"
-                    }
-                    alt="score"
-                    className="size-5"
-                />
-                <p className="text-xl text-gray-500 ">{tip.tip}</p>
+              <div className="flex flex-row gap-2 sm:gap-3 items-start" key={index}>
+                <img src={tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"} alt="icon" className="w-4 h-4 sm:w-5 sm:h-5 mt-1 flex-shrink-0" />
+                {/* Perkecil font untuk judul tip pendek */}
+                <p className="text-sm sm:text-lg text-gray-600 font-medium leading-snug">{tip.tip}</p>
               </div>
           ))}
         </div>
-        <div className="flex flex-col gap-4 w-full">
+
+        <div className="flex flex-col gap-3 sm:gap-4 w-full">
           {tips.map((tip, index) => (
-              <div
-                  key={index + tip.tip}
-                  className={cn(
-                      "flex flex-col gap-2 rounded-2xl p-4",
-                      tip.type === "good"
-                          ? "bg-green-50 border border-green-200 text-green-700"
-                          : "bg-yellow-50 border border-yellow-200 text-yellow-700"
-                  )}
-              >
-                <div className="flex flex-row gap-2 items-center">
-                  <img
-                      src={
-                        tip.type === "good"
-                            ? "/icons/check.svg"
-                            : "/icons/warning.svg"
-                      }
-                      alt="score"
-                      className="size-5"
-                  />
-                  <p className="text-xl font-semibold">{tip.tip}</p>
+              <div key={index + tip.tip} className={cn(
+                  "flex flex-col gap-1.5 sm:gap-2 rounded-xl sm:rounded-2xl p-3 sm:p-5 transition-transform hover:-translate-y-1",
+                  tip.type === "good" ? "bg-green-50/80 border border-green-200 text-green-800" : "bg-yellow-50/80 border border-yellow-200 text-yellow-800"
+              )}>
+                <div className="flex flex-row gap-2 sm:gap-3 items-start sm:items-center mb-1">
+                  <img src={tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"} alt="icon" className="w-4 h-4 sm:w-6 sm:h-6 mt-0.5 sm:mt-0" />
+                  <p className="text-base sm:text-xl font-bold leading-tight">{tip.tip}</p>
                 </div>
-                <p>{tip.explanation}</p>
+                {/* Perkecil font untuk paragraf deskripsi */}
+                <p className="text-xs sm:text-base opacity-90 leading-relaxed ml-6 sm:ml-9">{tip.explanation}</p>
               </div>
           ))}
         </div>

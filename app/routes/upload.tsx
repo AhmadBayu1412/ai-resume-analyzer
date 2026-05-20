@@ -88,7 +88,7 @@ const Upload = () => {
 
             <section className="main-section">
                 <div className="page-heading py-16">
-                    <h1>Smart feedback for your dream job</h1>
+                    <h1>Optimize Your Resume Before Recruiters See It</h1>
                     {isProcessing ? (
                         <>
                             <h2>{statusText}</h2>
@@ -96,21 +96,27 @@ const Upload = () => {
                         </>
                     ) 
                     : (
-                        <h2>Drop your resume for an ATS score and improvement tips</h2>
+                        <h2>Upload your resume and receive instant scoring, actionable improvements, and ATS-ready optimization in seconds.</h2>
                     )}
                     {!isProcessing && (
                         <form id="upload-form" onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
                             <div className="form-div">
-                                <label htmlFor="company-name">Company Name</label>
-                                <input type="text" name='company-name' placeholder="Company Name" id="company-name" />
+                                <label htmlFor="company-name">Target Company</label>
+                                <input type="text" name='company-name' placeholder="e.g. Google, Microsoft, Spotify" id="company-name" />
                             </div>
                             <div className="form-div">
-                                <label htmlFor="job-title">Job Title</label>
-                                <input type="text" name='job-title' placeholder="Job Title" id="job-title" />
+                                <label htmlFor="job-title">Desired Position</label>
+                                <input type="text" name='job-title' placeholder="e.g. Frontend Developer" id="job-title" />
                             </div>
                             <div className="form-div">
-                                <label htmlFor="job-description">Job Description</label>
-                                <input type="text" name='job-description' placeholder="Job Description" id="job-description" />
+                                <label htmlFor="job-description">Job Requirements</label>
+                                <textarea
+                                    name="job-description"
+                                    placeholder="Paste the job description here for smarter ATS analysis.."
+                                    id="job-description"
+                                    rows={6}
+                                    className="resize-none max-h-60 overflow-y-auto"
+                                    />
                             </div>
                             <div className="form-div">
                                 <label htmlFor="uploader">Upload Resume</label>
@@ -118,7 +124,7 @@ const Upload = () => {
 
                             </div>
 
-                            <button className="primary-button" type="submit">Analyze Resume</button>
+                            <button className="primary-button bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-300 shadow-md shadow-indigo-500;" type="submit">Analyze Resume</button>
                         </form>
                     )}
                 </div>
