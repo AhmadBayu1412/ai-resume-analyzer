@@ -3,6 +3,7 @@ import ScoreCircle from "./ScoreCircle"
 import { usePuterStore } from "~/lib/puter"
 import { useEffect, useState } from "react"
 
+
 const ResumeCard = ({resume: {id, companyName, jobTitle, feedback, imagePath}, onDelete}: {resume:any, onDelete?: (id: string) => void}) => {
     const {fs, kv} = usePuterStore()
     const [resumeUrl, setResumeUrl] = useState('')
@@ -20,18 +21,18 @@ const ResumeCard = ({resume: {id, companyName, jobTitle, feedback, imagePath}, o
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        if (!confirm('Hapus resume ini?')) return
+        if (!confirm('Delete this resume?')) return
         setIsDeleting(true)
         try {
             const key = `resume:${id}`
             const result = await kv.delete(key)
             if (result === false) {
-                alert(`Gagal menghapus.`)
+                alert(`Failed to delete.`)
                 return
             }
             onDelete?.(id)
         } catch (error) {
-            alert('Gagal menghapus resume: ' + error)
+            alert('Failed to delete resume: ' + error)
         } finally {
             setIsDeleting(false)
         }
