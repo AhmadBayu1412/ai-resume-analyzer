@@ -428,8 +428,8 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       name: "openrouter",
       enabled: true,
       chat: async ({ prompt }) => {
-        const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-        if (!apiKey) throw new Error("OpenRouter API key missing");
+        // const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
+        // if (!apiKey) throw new Error("OpenRouter API key missing");
 
         const model = get().aiModel;
         const validatedModel =
