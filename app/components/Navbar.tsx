@@ -6,7 +6,9 @@ import {
     Database, 
     AlertCircle, 
     LogOut,
-    ChevronDown
+    ChevronDown,
+    Menu, // Tambahan Icon
+    X     // Tambahan Icon
 } from "lucide-react";
 import { Link } from "react-router";
 import { usePuterStore } from "~/lib/puter";
@@ -14,49 +16,44 @@ import { useState, useEffect, useRef } from "react";
 
 const Navbar = () => {
     const { auth, aiModel, setAiModel, kv } = usePuterStore();
+    
+    // 1. State Management yang baru
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [resumeCount, setResumeCount] = useState(0);
     const MAX_RESUMES = 10; 
 
-    // 1. Ref untuk delay tutup modal (Mengatasi issue hilang saat mau klik logout)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    const handleMouseEnter = () => {
-        // Jika kursor masuk kembali sebelum delay habis, batalkan penutupan modal
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        setIsProfileOpen(true);
-    };
-
-    const handleMouseLeave = () => {
-        // Beri jeda 300ms sebelum modal benar-benar tertutup
-        timeoutRef.current = setTimeout(() => {
-            setIsProfileOpen(false);
-        }, 300); 
-    };
+    // 2. Ref untuk mendeteksi klik di luar modal profil
+    const profileRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Logika Kuota (Tetap sama)
+    useEffect(() => {
         if (auth.isAuthenticated) {
-            // Ambil hanya keys-nya saja
             kv.list('resume:*').then((keys: any) => {
-                // 2. Logika Kuota 2 Jam
                 const now = Date.now();
                 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
                 
                 let recentUploads = 0;
                 
                 keys?.forEach((key: string) => {
-                    // Ambil ID dari nama key (contoh: 'resume:1715000000000' -> '1715000000000')
                     const idStr = key.replace('resume:', '');
                     const timestamp = parseInt(idStr);
                     
-                    // Jika ID adalah timestamp yang valid
                     if (!isNaN(timestamp) && timestamp > 1000000000000) {
-                        // Cek apakah di-upload dalam kurun waktu 2 jam terakhir
                         if (now - timestamp <= TWO_HOURS_MS) {
                             recentUploads++; 
                         }
                     } else {
-                        // Jika ID bukan timestamp (data lama), tetap dihitung
                         recentUploads++;
                     }
                 });
@@ -73,7 +70,6 @@ const Navbar = () => {
         <nav className="navbar flex items-center justify-between p-4 bg-[#060416] border-b border-white/5 relative z-[50]">
             {/* KIRI: LOGO & BRAND */}
             <Link to="/" className="flex items-center gap-3 group">
-                {/* 3. Animasi Logo saat di-hover: Kotak membesar & muter sedikit, Bintang berputar */}
                 <div className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-500 shadow-md shadow-indigo-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                     <Sparkles className="w-4 h-4 text-white group-hover:animate-spin duration-700" />
                 </div>
@@ -87,7 +83,7 @@ const Navbar = () => {
                 </div>
             </Link>
             
-            {/* TENGAH: LINK NAVIGASI */}
+            {/* TENGAH: LINK NAVIGASI (HANYA DESKTOP) */}
             <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400 absolute left-1/2 -translate-x-1/2">
                 <Link to="/" className="hover:text-white transition-colors duration-200">Home</Link>
                 <Link to="/how-its-works" className="hover:text-white transition-colors duration-200">How it Works</Link>
@@ -95,27 +91,26 @@ const Navbar = () => {
             </div>
             
             {/* KANAN: KELOMPOK TOMBOL AKSI & AUTH */}
-            <div className="flex items-center gap-4 sm:gap-5">
+            <div className="flex items-center gap-3 sm:gap-5">
                 
                 {auth.isAuthenticated ? (
-                    <div 
-                        className="relative"
-                        // Menggunakan fungsi penunda Hover yang baru
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                    >
-                        {/* Profile Trigger */}
-                        <div className="flex items-center gap-1.5 cursor-pointer bg-white/5 border border-white/10 p-1.5 sm:pl-2 sm:pr-2.5 sm:py-1.5 rounded-full hover:bg-white/10 transition-colors">
+                    <div className="relative" ref={profileRef}>
+                        {/* 3. Profile Trigger (DIGANTI MENJADI ONCLICK) */}
+                        <div 
+                            onClick={() => setIsProfileOpen(!isProfileOpen)}
+                            className="flex items-center gap-1.5 cursor-pointer bg-white/5 border border-white/10 p-1.5 sm:pl-2 sm:pr-2.5 sm:py-1.5 rounded-full hover:bg-white/10 transition-colors"
+                        >
                             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-inner">
                                 <User className="w-4 h-4 text-white" />
                             </div>
                             <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
                         </div>
 
-                        {/* Hover Modal Dropdown */}
+                        {/* Dropdown Profil */}
                         {isProfileOpen && (
-                            <div className="absolute right-0 top-full pt-3 z-1000">
-                                <div className="w-72 sm:w-80 bg-[#0f0b24]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-4 animate-in fade-in zoom-in-95 duration-200">
+                            <div className="absolute right-0 top-full pt-3 z-[100]">
+                                {/* 4. PERBAIKAN LEBAR UNTUK MOBILE (w-[280px]) */}
+                                <div className="w-[280px] sm:w-80 bg-[#0f0b24]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-4 animate-in fade-in zoom-in-95 duration-200">
                                     
                                     {/* Info User */}
                                     <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/10">
@@ -201,13 +196,30 @@ const Navbar = () => {
                 <Link 
                     to="/upload" 
                     viewTransition
-                    className="primary-button flex items-center gap-2 text-xs sm:text-sm py-2 px-3.5 sm:px-5 sm:py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-full text-white font-medium shadow-md hover:shadow-indigo-500/30 transition-all"
+                    className="primary-button flex items-center gap-2 text-xs sm:text-sm py-2 px-3.5 sm:px-5 sm:py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-full text-white font-medium shadow-md hover:shadow-indigo-500/30 transition-all shrink-0"
                 >
                     <Upload className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Upload Resume</span>
                     <span className="sm:hidden">Upload</span>
                 </Link>
+
+                {/* 5. HAMBURGER MENU ICON UNTUK MOBILE */}
+                <button 
+                    className="md:hidden flex items-center p-1.5 text-gray-400 hover:text-white transition-colors"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
             </div>
+
+            {/* 6. MODAL DROPDOWN MOBILE MENU (HOME, DASHBOARD, DLL) */}
+            {isMobileMenuOpen && (
+                <div className="absolute top-full left-0 w-full bg-[#0f0b24]/95 backdrop-blur-2xl border-b border-white/10 p-5 flex flex-col gap-4 md:hidden z-[45] shadow-2xl animate-in slide-in-from-top-2">
+                    <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-gray-300 hover:text-white">Home</Link>
+                    <Link to="/how-its-works" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-gray-300 hover:text-white">How it Works</Link>
+                    <Link to="/my-dashboard" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-gray-300 hover:text-white">My Dashboard</Link>
+                </div>
+            )}
         </nav>
     )
 }
