@@ -5,7 +5,7 @@
 CVPilot is a modern AI-powered resume analyzer platform designed to help job seekers improve their resumes, optimize ATS compatibility, and receive intelligent feedback for better hiring opportunities.
 The platform combines elegant UI design with AI-driven resume analysis to create a fast, interactive, and beginner-friendly career optimization experience.
 
-## ⏮️ Preview CVPlilot
+## ⏮️ Preview CVPilot
 <img width="1839" height="928" alt="cv-pilot" src="https://github.com/user-attachments/assets/6be1525c-4a94-4cf9-9f54-7a97afb7d61b" />
 CVPilot is a modern AI-powered resume analyzer platform built to help users optimize their resumes for ATS (Applicant Tracking Systems), improve resume quality, and receive intelligent AI-generated feedback.
 
