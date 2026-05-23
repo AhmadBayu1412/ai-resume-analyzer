@@ -1,5 +1,9 @@
 import { create } from "zustand";
 
+/**
+ * Zustand store for managing Puter.js integration.
+ * Provides a unified, reactive interface for Puter services.
+ */
 declare global {
   interface Window {
     puter: {
