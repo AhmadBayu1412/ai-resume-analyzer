@@ -19,6 +19,19 @@ const Upload = () => {
         setFile(file)
     }
 
+    /**
+     * Orchestrates the complete resume analysis pipeline.
+     * 
+     * Pipeline Steps:
+     * 1. File Upload: Persists the source PDF to Puter's file system for storage.
+     * 2. Visual Preview: Converts the first page of the PDF to an image for UI display.
+     * 3. Persistence: Initializes a record in the KV store with a unique UUID to track the session.
+     * 4. AI Analysis: Uses the Puter AI service to analyze the resume against 
+     *    specific job requirements provided via `prepareInstructions`.
+     * 5. Result Sync: Parses the AI feedback and updates the KV record with the final analysis.
+     * 
+     * @throws Will set statusText and return early if any file operation or AI analysis fails.
+     */
     const handleAnalyze = async({companyName, jobTitle, jobDescription, file}: { companyName:string, jobTitle: string, jobDescription: string, file: File }) => {
         setIsProcessing(true)
 
