@@ -1,4 +1,7 @@
-// Variabel resumes harus berupa array yang berisi object bertipe Resume
+/**
+ * A collection of resume analysis results stored in the system.
+ * Each entry links a user's uploaded resume to its corresponding AI feedback.
+ */
 export const resumes: Resume[] = [
   {
     id: "1",
@@ -182,6 +185,10 @@ export const resumes: Resume[] = [
   },
 ];
 
+/**
+ * The strict JSON schema that the AI model must follow when providing feedback.
+ * All scores are normalized to a 0-100 scale.
+ */
 export const AIResponseFormat = `
       interface Feedback {
       overallScore: number; //max 100
@@ -226,6 +233,21 @@ export const AIResponseFormat = `
       };
     }`;
 
+/**
+ * Generates the system prompt for the AI resume analyzer.
+ * 
+ * @param {Object} params - The configuration object.
+ * @param {string} params.jobTitle - The target job title for the resume.
+ * @param {string} params.jobDescription - The job description context to tailor the analysis.
+ * 
+ * @returns {string} The formatted system instruction prompt for the LLM.
+ * 
+ * @example
+ * const prompt = prepareInstructions({ 
+ *   jobTitle: "Software Engineer", 
+ *   jobDescription: "Proficient in React, Node.js..." 
+ * });
+ */
 export const prepareInstructions = ({
   jobTitle,
   jobDescription,
