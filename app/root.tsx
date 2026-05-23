@@ -12,6 +12,9 @@ import "./app.css";
 import { usePuterStore } from "./lib/puter";
 import { useEffect } from "react";
 
+/**
+ * Global stylesheet links for typography and core layouts.
+ */
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -25,8 +28,12 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+/**
+ * Root Layout: Initializes Puter SDK and provides global HTML skeleton.
+ */
 export function Layout({ children }: { children: React.ReactNode }) {
   const {init} = usePuterStore()
+  // Trigger Puter initialization once on app load
   useEffect(() => {
     init()
   }, [init])
@@ -54,6 +61,9 @@ export default function App() {
   return <Outlet />;
 }
 
+/**
+ * ErrorBoundary: Handles global application errors and displays debug info in dev mode.
+ */
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
